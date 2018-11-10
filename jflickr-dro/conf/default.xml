@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>JFlickr Data Request Organizer v0.1</comment>
+<entry key="export_location">data/export/</entry>
+<entry key="import_location">data/import/</entry>
+</properties>
