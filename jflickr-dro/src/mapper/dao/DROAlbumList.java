@@ -74,6 +74,7 @@ public class DROAlbumList {
 			al = albums.iterator();
 			while (al.hasNext()) {
 				DROAlbum a = al.next();
+				bw.write("\n");
 				bw.write("<h2 id=\""+a.getAlbumId()+"\">"+a.getAlbumTitle()+"</h2>");
 				bw.write("<ul>");
 				
@@ -90,8 +91,10 @@ public class DROAlbumList {
 						+">"
 						+"</a>");
 					bw.write("</li>");
+					bw.write("\n");
 				}
 				bw.write("</ul>");
+				bw.write("\n");
 			}
 			
 			bw.write("</body>");
