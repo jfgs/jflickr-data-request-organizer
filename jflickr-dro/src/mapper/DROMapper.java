@@ -74,14 +74,10 @@ public class DROMapper {
 		});
 		
 		for (Object jsonObject : obj) {
+			
 			JSONObject o = ((JSONObject) jsonObject);
 			
-			//System.out.print(o.get("title"));
-			
 			DROAlbum album = new DROAlbum((String) o.get("id"), (String) o.get("title"));
-			
-			//Timestamp t = new Timestamp(Long.valueOf((String) o.get("created")));
-			//System.out.println(" - "+t.toLocalDateTime().toString());
 			
 			JSONArray p = (JSONArray) o.get("photos");
 			Iterator i = p.iterator();
@@ -97,14 +93,14 @@ public class DROMapper {
 					System.err.println("Photo "+photoId+" not found!");
 				}
 				
-				if (mappedPhotos > 333) {
+				if (mappedPhotos > 1111) {
 					break;
 				}
 			}
 			
 			albums.add(album);
 			
-			if (mappedPhotos > 333) {
+			if (mappedPhotos > 1111) {
 				break;
 			}
         }
@@ -135,7 +131,9 @@ public class DROMapper {
 		return directory.listFiles(new FilenameFilter() {
 		    @Override
 			public boolean accept(File dir, String name) {
-		        return name.contains("_"+photoId+"_o");
+		        return 
+		            name.contains("_"+photoId+"_") 
+		            || name.startsWith(photoId+"_");
 		    }
 		});
 	}
