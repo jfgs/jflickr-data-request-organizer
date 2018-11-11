@@ -45,20 +45,34 @@ public class DROMapper {
 	private DROAlbumList mapAlbums() {
 		
 		final DROAlbumList albums = new DROAlbumList();
+		
 		int mappedPhotos = 0;
+		int mappedAlbums = 0;
+		int allAlbums = 0; 
 		
 		final JSONParser parser = new JSONParser();
 		JSONObject rawData;
 		
 		try {
+			File[] f = findFile(
+				"albums.json",
+				new File(params.getImportLocation()));
+			if (f == null || f[0] == null || "".equals(f[0])) {
+				throw new RuntimeException("Can't open albums.json!");
+			}
+			System.out.println(
+				"Mapping raw data from file: "
+				+f[0].getAbsolutePath());
 			rawData = (JSONObject) parser.parse(
-					new FileReader(
-							params.getImportLocation()+"albums.json")); // FIXME
+					new FileReader(f[0].getAbsolutePath()));   					// FIXME
 		} catch (IOException | ParseException e) {
 			throw new RuntimeException(e);
 		}		
 		
-		JSONArray albumList = (JSONArray) rawData.get("albums"); // FIXME
+		JSONArray albumList = (JSONArray) rawData.get("albums"); 				// FIXME
+		
+		allAlbums = albumList.size();
+		
 		Object[] obj = albumList.toArray();
 		Arrays.sort(obj, new Comparator() {
 			
@@ -77,32 +91,43 @@ public class DROMapper {
 			
 			JSONObject o = ((JSONObject) jsonObject);
 			
+			mappedAlbums++;
+			System.out.print("Mapping album ("+mappedAlbums+"/"+allAlbums+") ");
+			
 			DROAlbum album = new DROAlbum((String) o.get("id"), (String) o.get("title"));
 			
 			JSONArray p = (JSONArray) o.get("photos");
 			Iterator i = p.iterator();
 			while(i.hasNext()) {
 				String photoId = (String) i.next();
-				File[] fs = findPhoto(photoId, new File(params.getImportLocation()));
-				if (fs != null && fs.length != 0) {
-					for (File f : fs) {
-						album.add(new DROPhoto(photoId, f));
-						mappedPhotos++;
+				
+				if (!"0".equals(photoId)) {
+					File[] fs = findFile(photoId, new File(params.getImportLocation()));
+					if (fs != null && fs.length != 0) {
+						for (File f : fs) {
+							album.add(new DROPhoto(photoId, f));
+							
+							mappedPhotos++;
+							if(mappedPhotos%10 == 1) {
+							    System.out.print("#");
+							}
+						}
+					} else {
+						System.err.println("Photo "+photoId+" not found!");
 					}
-				} else {
-					System.err.println("Photo "+photoId+" not found!");
 				}
 				
-				if (mappedPhotos > 1111) {
-					break;
-				}
+				//if (mappedPhotos > 1111) {
+				//	break;
+				//}
 			}
 			
 			albums.add(album);
+			System.out.println("");
 			
-			if (mappedPhotos > 1111) {
-				break;
-			}
+			//if (mappedPhotos > 1111) {
+			//	break;
+			//}
         }
 		
 		return albums;
@@ -111,17 +136,17 @@ public class DROMapper {
 	/**
 	 * Recursive file search
 	 * 
-	 * @param photoId filename pattern *_<photoId>_o*
+	 * @param filename filename pattern
 	 * @param directory root directory
 	 * @return 
 	 */
-	private File[] findPhoto(final String photoId, final File directory) {
-		if ("0".equals(photoId)) {
+	private File[] findFile(final String filename, final File directory) {
+		if ("0".equals(filename)) {
 			return null; 
 		}
 		for (File fd : directory.listFiles()) {
 			if (fd.isDirectory()) {
-				File[] r = findPhoto(photoId, fd);
+				File[] r = findFile(filename, fd);
 				// First matching filename and exit
 				if (r != null && r.length > 0) {
 					return r; 
@@ -132,8 +157,12 @@ public class DROMapper {
 		    @Override
 			public boolean accept(File dir, String name) {
 		        return 
-		            name.contains("_"+photoId+"_") 
-		            || name.startsWith(photoId+"_");
+		        	// photo filename pattern *_id_*
+		            name.contains("_"+filename+"_")
+		            // photo filename pattern id_*
+		            || name.startsWith(filename+"_")
+		            // exact filename
+		            || name.equals(filename);
 		    }
 		});
 	}
