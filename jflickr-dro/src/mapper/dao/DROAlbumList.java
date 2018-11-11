@@ -65,36 +65,15 @@ public class DROAlbumList {
 			Iterator<DROAlbum> al = albums.iterator();
 			while (al.hasNext()) {
 				DROAlbum a = al.next();
-				bw.write("<li><a href=\"#"+a.getAlbumId()+"\">"+a.getAlbumTitle()+"</a></li>");
+				bw.write("<li><a href=\""+a.getAlbumId()+".html\">"+a.getAlbumTitle()+"</a></li>");
 			}
 			bw.write("</ol>");
 			
-			// Albums
-			bw.write("<h1>Albums:</h1>");
+			// Albums, with separate page per album
 			al = albums.iterator();
 			while (al.hasNext()) {
 				DROAlbum a = al.next();
-				bw.write("\n");
-				bw.write("<h2 id=\""+a.getAlbumId()+"\">"+a.getAlbumTitle()+"</h2>");
-				bw.write("<ul>");
-				
-				// Photos
-				Iterator<DROPhoto> pl = a.getPhotos();
-				while (pl.hasNext()) {
-					DROPhoto p = pl.next();
-					
-					bw.write("<li>");
-					bw.write(
-						"<a href=\"file://"+p.getPhotoLocation().getAbsolutePath()+"\">"
-						+ "<img src=\""+p.getPhotoLocation().getAbsolutePath()
-						+"\" title=\""+p.getPhotoId() + "\""
-						+">"
-						+"</a>");
-					bw.write("</li>");
-					bw.write("\n");
-				}
-				bw.write("</ul>");
-				bw.write("\n");
+				a.renderAlbumToHTML(a.getAlbumId()+".html");
 			}
 			
 			bw.write("</body>");
