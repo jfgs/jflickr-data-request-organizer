@@ -91,7 +91,11 @@ public class DROAlbum {
 					+ "<img src=\""+p.getPhotoLocation().getAbsolutePath()
 					+"\" title=\""+p.getPhotoId() + "\""
 					+">"
-					+"</a>");
+					+"</a>"
+					+ "<div>"
+					+ "<h3>"+p.getName()+"</h3>"
+					+ "<p><small>"+p.getDescription()+"</small></p>"
+					+ "</div>");
 				bw.write("</li>");
 				bw.write("\n");
 			}
