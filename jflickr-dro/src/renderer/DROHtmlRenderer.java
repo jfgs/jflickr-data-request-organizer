@@ -11,6 +11,11 @@ import mapper.dao.DROAlbumList;
 import mapper.dao.DROPhoto;
 import parameters.DROParamManager;
 
+/**
+ * 
+ * HTML renderer
+ *
+ */
 public class DROHtmlRenderer {
 	
 	public static void renderAlbum(final DROAlbum a, final String filename) {
@@ -20,11 +25,7 @@ public class DROHtmlRenderer {
 			bw = new BufferedWriter(new FileWriter(
 				new File(param.getExportLocation()+filename)));
 			
-			bw.write("<html>");
-			bw.write("<head>");
-			bw.write("<link rel=\"stylesheet\" href=\"../../conf/export.css\">");
-			bw.write("</head>");
-			bw.write("<body>");
+			DefaultHtmlTemplate.writeHeaderStart(bw);
 			
 			// Album
 			bw.write("\n");
@@ -53,8 +54,7 @@ public class DROHtmlRenderer {
 			bw.write("</ul>");
 			bw.write("\n");			
 			
-			bw.write("</body>");
-			bw.write("</html>");
+			DefaultHtmlTemplate.writeHeaderEnd(bw);
 			
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -74,11 +74,7 @@ public class DROHtmlRenderer {
 			bw = new BufferedWriter(new FileWriter(
 				new File(param.getExportLocation()+"export.html")));
 			
-			bw.write("<html>");
-			bw.write("<head>");
-			bw.write("<link rel=\"stylesheet\" href=\"../../conf/export.css\">");
-			bw.write("</head>");
-			bw.write("<body>");
+			DefaultHtmlTemplate.writeHeaderStart(bw);
 			
 			// Album list
 			bw.write("<h1>Album list:</h1>");
@@ -97,8 +93,7 @@ public class DROHtmlRenderer {
 				renderAlbum(a, a.getAlbumId()+".html");
 			}
 			
-			bw.write("</body>");
-			bw.write("</html>");
+			DefaultHtmlTemplate.writeHeaderEnd(bw);
 			
 		} catch (IOException e) {
 			throw new RuntimeException(e);
