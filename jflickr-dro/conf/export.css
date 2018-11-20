@@ -1,0 +1,19 @@
+body { 
+    background-color: lightgray; 
+}
+img {
+    width:auto; 
+    max-width:500px; 
+    height=auto; 
+    max-height:300px; 
+    min-height:300px; 
+    padding:16px; 
+    margin: 8px; 
+    background-color: white; 
+}
+ul {
+    column-count: 3;
+    column-gap: 8px;
+    list-style-type: none;
+    text-align: center; 
+}

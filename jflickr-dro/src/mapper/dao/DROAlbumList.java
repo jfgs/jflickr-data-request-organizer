@@ -34,28 +34,7 @@ public class DROAlbumList {
 			
 			bw.write("<html>");
 			bw.write("<head>");
-			bw.write(
-				"<style>\n" + 
-				"body { \n" + 
-				"    background-color: lightgray; \n" + 
-				"}\n" + 
-				"img {\n" + 
-				"    width:auto; \n" + 
-				"    max-width:500px; \n" + 
-				"    height=auto; \n" + 
-				"    max-height:300px; \n" +
-				"    min-height:300px; \n" +
-				"    padding:16px; \n" + 
-				"    margin: 8px; \n" + 
-				"    background-color: white; \n" + 
-				"}\n" + 
-				"ul {\n" + 
-				"    column-count: 3;\n" + 
-				"    column-gap: 8px;\n" + 
-				"    list-style-type: none;\n" + 
-				"    text-align: center; \n" + 
-				"}\n" + 
-				"</style>");
+			bw.write("<link rel=\"stylesheet\" href=\"../../conf/export.css\">");
 			bw.write("</head>");
 			bw.write("<body>");
 			
