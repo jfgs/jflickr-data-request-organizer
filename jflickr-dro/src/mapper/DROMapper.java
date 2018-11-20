@@ -17,6 +17,7 @@ import mapper.dao.DROAlbum;
 import mapper.dao.DROAlbumList;
 import mapper.dao.DROPhoto;
 import parameters.DROParamManager;
+import renderer.DROHtmlRenderer;
 
 /**
  * Mapper of photos from raw data files. 
@@ -30,7 +31,8 @@ public class DROMapper {
 		params = new DROParamManager();
 		
 		DROAlbumList al = mapAlbums();
-		al.renderAllAlbumsToHTML();
+		
+		DROHtmlRenderer.renderAlbumList(al);
 		
 		System.out.println("ok!");
 		
